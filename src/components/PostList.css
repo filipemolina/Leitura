@@ -1,0 +1,12 @@
+.post-list{
+	display: flex;
+	flex-direction: column;
+	justify-content: 	center;
+	align-items: center;
+	padding: 5vh 0;
+}
+
+.post-list .post{
+	width: 60vh;
+	margin-bottom: 5vh;
+}
