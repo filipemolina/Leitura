@@ -23,6 +23,8 @@ class Post extends Component{
 
 	render (){
 
+		const { showComments } = this.props
+
 		const icon = this.state.userClicked 
 									? <ActionThumbUp color={this.props.muiTheme.palette.primary1Color} /> 
 									: <ActionThumbUp />
@@ -45,6 +47,12 @@ class Post extends Component{
 		      Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
 		      Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
 		    </CardText>
+
+		  	{/* Only show the comment section if explicitly instructed */}
+		    {showComments && (
+		    	<CommentSection isOpen={true} />
+		    )}
+
 		    <CardActions>
 		      <FlatButton 
 		      	label={voteLabel}

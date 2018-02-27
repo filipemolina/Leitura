@@ -2,6 +2,10 @@
 	background: #eee;
 }
 
+.main-content{
+	transition: 0.1s all linear;
+}
+
 .comment{
 	margin-bottom: 5px;
 }

@@ -14,7 +14,8 @@ import { orange500, orange700, grey500, yellow600 } from 'material-ui/styles/col
 class App extends Component {
 
   state = {
-    isModalOpen: false
+    isModalOpen: false,
+    isMenuOpen: true
   }
 
   // Customizing the theme using getMuiTheme
@@ -27,6 +28,11 @@ class App extends Component {
     }
   })
 
+  // Opens and closes the Side Menu
+  toggleMenu = () => this.setState((prevState) => ({
+    isMenuOpen: !prevState.isMenuOpen
+  }))
+
   // Opens the modal for adding a new post
   handleOpenModal = () => this.setState({
     isModalOpen: true
@@ -38,23 +44,47 @@ class App extends Component {
   })
 
   render() {
+
+    // Calculate the padding of the main content section based off of wheter the Side menu is open
+    let style
+
+    if(this.state.isMenuOpen)
+      style = {
+        padding: '84px 0 0 256px',
+      }
+    else
+      style = {
+        padding: '84px 0 0 0'
+      }
+
     return (
       <MuiThemeProvider muiTheme={this.newTheme}>
         <div className="App">
 
           {/* Top Bar of the application */}
-          <AppBar title="Leitura" style={{ position: 'fixed' }} onLeftIconButtonClick={this.props.handleOpenMenu}/>
+          <AppBar title="Leitura" style={{ position: 'fixed' }} onLeftIconButtonClick={() => this.toggleMenu()}/>
 
           {/* Side Menu containing navigation links */}
-          <SideMenu handleOpenModal={() => this.handleOpenModal()}/>
+          <SideMenu 
+            handleOpenModal={() => this.handleOpenModal()}
+            isMenuOpen={this.state.isMenuOpen}
+          />
 
-          {/* Here the React Router takes on and control what is shown in the main content section*/}
-          <Route exact path="/" render={() => (
-            <HomePage 
-              isMenuOpen={this.state.isMenuOpen} 
-              handleOpenModal={() => this.handleOpenModal()}
-            />  
-          )}/>
+          {/* Here the React Router takes on and controls what is shown in the main content section*/}
+          <div className="main-content" style={style}>
+
+            <Route exact path="/" render={() => (
+              <HomePage 
+                isMenuOpen={this.state.isMenuOpen} 
+                handleOpenModal={() => this.handleOpenModal()}
+              />  
+            )}/>
+
+            <Route path="/post" render={() => (
+              
+            )}
+
+          </div>
 
           {/* Modal to Add a new post */}
           <AddPostModal handleClose={() => this.handleCloseModal()} isModalOpen={this.state.isModalOpen}/>
