@@ -6,10 +6,10 @@ class PostList extends Component{
 	render() {
 		return (
 			<div className="post-list">
-				<Post/>
-				<Post/>
-				<Post/>
-				<Post/>
+				<Post votes={34}/>
+				<Post votes={15}/>
+				<Post votes={12}/>
+				<Post votes={65}/>
 			</div>
 		)
 	}

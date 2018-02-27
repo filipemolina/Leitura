@@ -4,9 +4,10 @@
 	justify-content: 	center;
 	align-items: center;
 	padding: 5vh 0;
+	padding: 84px 0 0 256px;
 }
 
 .post-list .post{
-	width: 60vh;
+	width: 60vw;
 	margin-bottom: 5vh;
 }

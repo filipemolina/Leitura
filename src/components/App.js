@@ -11,7 +11,7 @@ import { orange500, orange700, grey500, yellow600 } from 'material-ui/styles/col
 class App extends Component {
 
   state = {
-    menuIsOpen: false,
+    isMenuOpen: true,
   }
 
   // Customizing the theme using getMuiTheme
@@ -24,12 +24,17 @@ class App extends Component {
     }
   })
 
+  // Opens the menu
+  handleOpenMenu = () => this.setState((prevState) => ({
+    isMenuOpen: !prevState.isMenuOpen
+  }))
+
   render() {
     return (
       <MuiThemeProvider muiTheme={this.newTheme}>
         <Route exact path="/" render={() => (
           <div className="App">
-            <HomePage />  
+            <HomePage isMenuOpen={this.state.isMenuOpen} handleOpenMenu={() => this.handleOpenMenu()}/>  
           </div>
         )}/>
       </MuiThemeProvider>
