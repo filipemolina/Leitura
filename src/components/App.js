@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import './App.css'
 import { Route } from 'react-router-dom'
 import HomePage from './HomePage'
+import AppBar from 'material-ui/AppBar'
+import SideMenu from './SideMenu'
+import AddPostModal from './AddPostModal'
 
 // Material UI Imports
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -11,7 +14,7 @@ import { orange500, orange700, grey500, yellow600 } from 'material-ui/styles/col
 class App extends Component {
 
   state = {
-    isMenuOpen: true,
+    isModalOpen: false
   }
 
   // Customizing the theme using getMuiTheme
@@ -24,19 +27,39 @@ class App extends Component {
     }
   })
 
-  // Opens the menu
-  handleOpenMenu = () => this.setState((prevState) => ({
-    isMenuOpen: !prevState.isMenuOpen
-  }))
+  // Opens the modal for adding a new post
+  handleOpenModal = () => this.setState({
+    isModalOpen: true
+  })
+
+  // Closes the modal for adding a new post
+  handleCloseModal = () => this.setState({
+    isModalOpen: false
+  })
 
   render() {
     return (
       <MuiThemeProvider muiTheme={this.newTheme}>
-        <Route exact path="/" render={() => (
-          <div className="App">
-            <HomePage isMenuOpen={this.state.isMenuOpen} handleOpenMenu={() => this.handleOpenMenu()}/>  
-          </div>
-        )}/>
+        <div className="App">
+
+          {/* Top Bar of the application */}
+          <AppBar title="Leitura" style={{ position: 'fixed' }} onLeftIconButtonClick={this.props.handleOpenMenu}/>
+
+          {/* Side Menu containing navigation links */}
+          <SideMenu handleOpenModal={() => this.handleOpenModal()}/>
+
+          {/* Here the React Router takes on and control what is shown in the main content section*/}
+          <Route exact path="/" render={() => (
+            <HomePage 
+              isMenuOpen={this.state.isMenuOpen} 
+              handleOpenModal={() => this.handleOpenModal()}
+            />  
+          )}/>
+
+          {/* Modal to Add a new post */}
+          <AddPostModal handleClose={() => this.handleCloseModal()} isModalOpen={this.state.isModalOpen}/>
+
+        </div>
       </MuiThemeProvider>
     )
   }

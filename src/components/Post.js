@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
+import CategoryChip from './CategoryChip'
+import CommentSection from './CommentSection'
 
 // Material UI imports
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 import ActionThumbUp from 'material-ui/svg-icons/action/thumb-up'
-import ActionThumbDown from 'material-ui/svg-icons/action/thumb-down'
 import CommunicationComment from 'material-ui/svg-icons/communication/comment'
+
+// High-order Component from Material UI to get access to the theme variables
+import muiThemeable from 'material-ui/styles/muiThemeable'
 
 class Post extends Component{
 
 	state = {
-		userClicked: false
+		userClicked: false,
 	}
 
 	handleVoteClick = () => this.setState((prevState) => ({
@@ -19,12 +23,22 @@ class Post extends Component{
 
 	render (){
 
-		const icon = this.state.userClicked ? <ActionThumbDown /> : <ActionThumbUp />
+		const icon = this.state.userClicked 
+									? <ActionThumbUp color={this.props.muiTheme.palette.primary1Color} /> 
+									: <ActionThumbUp />
+
 		const voteLabel = this.state.userClicked ? `Unvote (${this.props.votes})` : `Vote (${this.props.votes})`
 
 		return (
 			<Card className="post">
-				<CardHeader title="Title of the Post" subtitle="Posted in 16 Jan 2018 por Jake" avatar="https://picsum.photos/200" />
+				<CardHeader 
+					title="Title of the Post" 
+					subtitle="Posted in 16 Jan 2018 por Jake" 
+					avatar="https://picsum.photos/200" 
+				/>
+				<CardText>
+		    	<CategoryChip text="Abacaxi" />
+		    </CardText>
 				<CardText>
 		      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 		      Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
@@ -37,9 +51,10 @@ class Post extends Component{
 		      	labelPosition="after"
 		      	icon={icon}
 		      	onClick={() => this.handleVoteClick()}
+		      	primary={this.state.userClicked}
 		      />
 		      <FlatButton 
-		      	label="Comment"
+		      	label="Join the Discussion"
 		      	labelPosition="after"
 		      	icon={<CommunicationComment />}
 		      />
@@ -49,4 +64,4 @@ class Post extends Component{
 	}
 }
 
-export default Post
+export default muiThemeable() (Post)

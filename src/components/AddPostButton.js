@@ -5,9 +5,6 @@ import './AddPostButton.css'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
-// High-order Component from Material UI to get access to the theme variables
-import muiThemeable from 'material-ui/styles/muiThemeable'
-
 class AddPostButton extends Component{
 	render(){
 
@@ -27,4 +24,4 @@ class AddPostButton extends Component{
 	}
 }
 
-export default muiThemeable() (AddPostButton)
+export default AddPostButton

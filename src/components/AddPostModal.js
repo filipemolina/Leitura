@@ -7,22 +7,36 @@ import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import SelectField from 'material-ui/SelectField'
 
-class AddPostModal extends Component{
+class AddPostModal extends Component {
 
 	state = {
 		name: '',
-		categorias: ["Teste", "Mulambo", "Crocodilo", "Aminoácido"],
-		categoria: "",
+		title: '',
+		categories: ["Teste", "Mulambo", "Crocodilo", "Aminoácido"],
+		category: "",
+		body: '',
 	}
 
-	// Handle the change of the "Name" text field
+	nameInput = ""
+
+	// Handles the change of the "Name" text field
 	handleChangeName = (event) => this.setState({
 		name : event.target.value
 	})
 
-	// Handle the change of the "Categorias" select field
+	// Handles the change of the "Title" text field
+	handleChangeTitle = (event) => this.setState({
+		title: event.target.value
+	})
+
+	// Handles the change on the "Body" text field
+	handleChangeBody = (event) => this.setState({
+		body: event.target.value
+	})
+
+	// Handles the change of the "Categorias" select field
 	handleSelectChange = (event, index, value) => this.setState({
-		categoria: value
+		category: value
 	})
 
 	// Clean the input fields and close the modal
@@ -30,7 +44,9 @@ class AddPostModal extends Component{
 		// Clean the fields
 		this.setState({
 			name: "",
-			categoria: ""
+			title: "",
+			category: "",
+			body: "",
 		})
 
 		// Invoke the function to close the modal
@@ -59,19 +75,40 @@ class AddPostModal extends Component{
 				modal={true}
 				open={this.props.isModalOpen}
 			>
-				<TextField floatingLabelText="Name" value={this.state.name} fullWidth={true} onChange={this.handleChangeName}/>
+
+				<TextField 
+					floatingLabelText="Name" 
+					value={this.state.name} 
+					fullWidth={true} 
+					onChange={this.handleChangeName}
+					autoFocus
+				/>
+
+				<TextField floatingLabelText="Title" value={this.state.title} fullWidth={true} onChange={this.handleChangeTitle}/>
+				
 				<SelectField
-					floatingLabelText="Categorias"
-					value={this.state.categoria}
+					floatingLabelText="Category"
+					value={this.state.category}
 					onChange={this.handleSelectChange}
 				>
-					<MenuItem key="1" value="" primaryText="" />
 					
-					{this.state.categorias.map((categoria) => (
-						<MenuItem key={categoria} value={categoria} primaryText={categoria} />
+					{this.state.categories.map((category) => (
+						<MenuItem key={category} value={category} primaryText={category} />
 					))}
 
 				</SelectField>
+
+				<br />
+
+				<TextField
+		      floatingLabelText="Body"
+		      multiLine={true}
+		      rows={2}
+		      rowsMax={4}
+		      fullWidth={true}
+		      value={this.state.body}
+		      onChange={this.handleChangeBody}
+		    />
 			</Dialog>
 		)
 	}
