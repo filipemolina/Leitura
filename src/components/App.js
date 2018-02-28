@@ -5,6 +5,7 @@ import HomePage from './HomePage'
 import AppBar from 'material-ui/AppBar'
 import SideMenu from './SideMenu'
 import AddPostModal from './AddPostModal'
+import PostDetails from './PostDetails'
 
 // Material UI Imports
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -80,8 +81,8 @@ class App extends Component {
               />  
             )}/>
 
-            <Route path="/post" render={() => (
-              ""
+            <Route path="/post/:id" render={({match}) => (
+              <PostDetails match={match}/>
             )} />
 
           </div>

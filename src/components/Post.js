@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CategoryChip from './CategoryChip'
 import CommentSection from './CommentSection'
+import { withRouter } from 'react-router-dom'
 
 // Material UI imports
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
@@ -65,6 +66,7 @@ class Post extends Component{
 		      	label="Join the Discussion"
 		      	labelPosition="after"
 		      	icon={<CommunicationComment />}
+		      	onClick={() => this.props.history.push("/post/laranja")}
 		      />
 		    </CardActions>
 			</Card>
@@ -72,4 +74,4 @@ class Post extends Component{
 	}
 }
 
-export default muiThemeable() (Post)
+export default muiThemeable() (withRouter(Post))
