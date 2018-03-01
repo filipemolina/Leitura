@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import './App.css'
 import { Route } from 'react-router-dom'
 import HomePage from './HomePage'
-import AppBar from 'material-ui/AppBar'
 import SideMenu from './SideMenu'
 import AddPostModal from './AddPostModal'
 import PostDetails from './PostDetails'
+import TopBar from './TopBar'
+import CategoryPage from './CategoryPage'
 
 // Material UI Imports
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -63,7 +64,11 @@ class App extends Component {
         <div className="App">
 
           {/* Top Bar of the application */}
-          <AppBar title="Leitura" style={{ position: 'fixed' }} onLeftIconButtonClick={() => this.toggleMenu()}/>
+          <TopBar 
+            title="Leitura" 
+            onLeftIconButtonClick={() => this.toggleMenu()}
+            showFilter={true}
+          />
 
           {/* Side Menu containing navigation links */}
           <SideMenu 
@@ -84,6 +89,13 @@ class App extends Component {
             <Route path="/post/:id" render={({match}) => (
               <PostDetails match={match}/>
             )} />
+
+            <Route path="/category/:category" render={({match}) => (
+              <CategoryPage 
+                match={match}
+                handleOpenModal={() => this.handleOpenModal()}
+              />
+            )} />            
 
           </div>
 

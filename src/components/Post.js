@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CategoryChip from './CategoryChip'
 import CommentSection from './CommentSection'
 import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 // Material UI imports
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
@@ -12,8 +13,12 @@ import CommunicationComment from 'material-ui/svg-icons/communication/comment'
 // High-order Component from Material UI to get access to the theme variables
 import muiThemeable from 'material-ui/styles/muiThemeable'
 
+// Action dispatchers
+import { setCurrentPage } from "../actions"
+
 class Post extends Component{
 
+	// This is just internal state that defines if the votes button should increase or decrease the value
 	state = {
 		userClicked: false,
 	}
@@ -21,6 +26,12 @@ class Post extends Component{
 	handleVoteClick = () => this.setState((prevState) => ({
 		userClicked: !prevState.userClicked
 	}))
+
+	// Set the current page on the UI store and the Router
+	navigate = url => {
+		this.props.history.push(url)
+		this.props.setCurrentPage(url)
+	}
 
 	render (){
 
@@ -55,23 +66,32 @@ class Post extends Component{
 		    )}
 
 		    <CardActions>
-		      <FlatButton 
-		      	label={voteLabel}
-		      	labelPosition="after"
-		      	icon={icon}
-		      	onClick={() => this.handleVoteClick()}
-		      	primary={this.state.userClicked}
-		      />
-		      <FlatButton 
-		      	label="Join the Discussion"
-		      	labelPosition="after"
-		      	icon={<CommunicationComment />}
-		      	onClick={() => this.props.history.push("/post/laranja")}
-		      />
+		    	<div>
+			      <FlatButton 
+			      	label={voteLabel}
+			      	labelPosition="after"
+			      	icon={icon}
+			      	onClick={() => this.handleVoteClick()}
+			      	primary={this.state.userClicked}
+			      />
+			    	{/* Show this button only if it is on the home page */}
+			    	{showComments || (
+			    		<FlatButton 
+				      	label="Join the Discussion"
+				      	labelPosition="after"
+				      	icon={<CommunicationComment />}
+				      	onClick={() => this.navigate("/post/laranja")}
+				      />
+			    	)}
+			    </div>
 		    </CardActions>
 			</Card>
 		)
 	}
 }
 
-export default muiThemeable() (withRouter(Post))
+const mapDispatchToProps = dispatch => ({
+	setCurrentPage: (url) => dispatch(setCurrentPage(url))
+})
+
+export default withRouter(muiThemeable() (connect(null, mapDispatchToProps) (Post)))

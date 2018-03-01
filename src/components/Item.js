@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 // Material UI imports
 import muiThemeable from 'material-ui/styles/muiThemeable'
@@ -17,7 +18,7 @@ class Item extends Component {
 		const { text, icon, isDropDown, isDropDownOpen, inset } = this.props
 
 		// Test if this item is primary and set the color accordingly
-		const color = this.props.primary ? primary1Color : 'rgba(0,0,0,0.87)'
+		const color = this.props.isPrimary ? primary1Color : 'rgba(0,0,0,0.87)'
 
 		let leftIcon
 
@@ -63,4 +64,8 @@ class Item extends Component {
 	}
 }
 
-export default muiThemeable() (Item)
+const mapStateToProps = (state, props) => ({
+	isPrimary: state.ui.currentPage === props.url
+})
+
+export default connect(mapStateToProps) (muiThemeable() (Item))

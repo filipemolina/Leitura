@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Post from './Post'
 
 class PostDetails extends Component {
 	render(){
@@ -6,7 +7,9 @@ class PostDetails extends Component {
 		const { params } = this.props.match
 
 		return(
-			<h2>{params.id}</h2>
+			<div className="post-details">
+				<Post showComments={true} votes={22} />
+			</div>
 		)
 	}
 }

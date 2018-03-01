@@ -1,20 +1,18 @@
 import React, { Component } from 'react'
 import Item from "./Item"
+import { connect } from 'react-redux'
+
+// Action dispatchers
+import * as Actions from "../actions"
 
 class SubItem extends Component {
 
 	render(){
 
-		const { text, primary, subItems, currentPage, isOpen } = this.props
+		const { text, subItems, isOpen } = this.props
 
 		// Set the correct height, padding, etc.. to the container of the subItems based off of wheter 
 		// the isOpen property of state
-
-		//<MenuItem
-		//	insetChildren={true}
-		//	primaryText={item}
-		//	onClick={this.props.handleClick(item, "")}
-		///>
 
 		let style
 
@@ -37,11 +35,10 @@ class SubItem extends Component {
 
 				<Item 
 					icon="categories" 
-					text={text} 
-					primary={primary}
-					handleClick={this.props.toggleCategory}
+					text={text}
 					isDropDown={true}
 					isDropDownOpen={isOpen}
+					handleClick={() => this.props.toggleCategoryDropdown()}
 				/>
 
 				<div className="sub-items" style={style}>
@@ -52,9 +49,9 @@ class SubItem extends Component {
 						<Item
 							inset={true}
 							text={item}
-							handleClick={() => this.props.handleClick(item, "")}
-							primary={currentPage === item}
 							key={item}
+							url={`/category/${item}`}
+							handleClick={() => this.props.handleClick(`/category/${item}`)}
 						/>
 					))}
 
@@ -65,4 +62,13 @@ class SubItem extends Component {
 	}
 }
 
-export default SubItem
+const mapStateToProps = (state, props) => ({
+	isOpen: state.ui.isCategoryDropdownOpen
+})
+
+const mapDispatchToProps = dispatch => ({
+	toggleCategoryDropdown: () => dispatch(Actions.toggleCategoryDropdown()),
+	setCurrentPage: (url) => dispatch(Actions.setCurrentPage(url))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps) (SubItem)

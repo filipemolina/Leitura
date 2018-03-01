@@ -14,3 +14,13 @@
 	display: flex;
 	justify-content: flex-end;
 }
+
+.post-details{
+	display: flex;
+	justify-content: center;
+}
+
+.post-details .post {
+	width: 60vw;
+	margin-bottom: 5vh;
+}
