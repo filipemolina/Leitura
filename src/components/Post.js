@@ -35,30 +35,25 @@ class Post extends Component{
 
 	render (){
 
-		const { showComments } = this.props
+		const { showComments, post } = this.props
 
 		const icon = this.state.userClicked 
 									? <ActionThumbUp color={this.props.muiTheme.palette.primary1Color} /> 
 									: <ActionThumbUp />
 
-		const voteLabel = this.state.userClicked ? `Unvote (${this.props.votes})` : `Vote (${this.props.votes})`
+		const voteLabel = this.state.userClicked ? `Unvote (${post.voteScore})` : `Vote (${post.voteScore})`
 
 		return (
 			<Card className="post">
 				<CardHeader 
-					title="Title of the Post" 
-					subtitle="Posted in 16 Jan 2018 por Jake" 
+					title={post.title} 
+					subtitle={`Posted in ${post.timestamp} by ${post.author}`}
 					avatar="https://picsum.photos/200" 
 				/>
 				<CardText>
-		    	<CategoryChip text="Abacaxi" />
+		    	<CategoryChip text={post.category} />
 		    </CardText>
-				<CardText>
-		      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-		      Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-		      Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-		      Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-		    </CardText>
+				<CardText>{post.body}</CardText>
 
 		  	{/* Only show the comment section if explicitly instructed */}
 		    {showComments && (
@@ -80,7 +75,7 @@ class Post extends Component{
 				      	label="Join the Discussion"
 				      	labelPosition="after"
 				      	icon={<CommunicationComment />}
-				      	onClick={() => this.navigate("/post/laranja")}
+				      	onClick={() => this.navigate(`/post/${post.id}`)}
 				      />
 			    	)}
 			    </div>

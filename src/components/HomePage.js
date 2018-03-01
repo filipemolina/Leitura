@@ -6,7 +6,7 @@ class HomePage extends Component{
 	render(){
 		return (
 			<div className="home-page">
-				<PostList />
+				<PostList posts={this.props.posts}/>
 				<AddPostButton handleOpen={() => this.props.handleOpenModal()}/>
 			</div>
 		)

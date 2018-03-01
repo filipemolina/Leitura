@@ -9,32 +9,13 @@ import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 
 // Action Dispatchers
-import { setCurrentPage, fetchCategories } from '../actions'
+import { setCurrentPage, fetchCategories, toggleCategoryDropdown } from '../actions'
 
 class SideMenu extends Component{
-
-	state = {
-		categories: [
-			'Category1',
-			'Category2',
-			'Category3',
-			'Category4',
-		],
-		categorySubmenuIsOpen: false,
-	}
 
 	pushToHistory = url => {
 		this.props.setCurrentPage(url)
 		this.props.history.push(url)
-	}
-
-	// Open and close the category subMenu
-	toggleCategory = () => this.setState((prevState) => ({
-		categorySubmenuIsOpen: !prevState.categorySubmenuIsOpen
-	}))
-
-	componentDidMount(){
-		this.props.fetchCategories()
 	}
 
 	render(){
@@ -48,15 +29,17 @@ class SideMenu extends Component{
 						text="Home Page"
 						url="/"
 						handleClick={() => this.pushToHistory("/")}
+						isPrimary={this.props.currentPage === "/"}
 					/>
 
 					<SubItem 
 						text="Categories"
-						subItems={this.state.categories}
+						subItems={this.props.categories}
 						currentPage={this.props.currentPage}
-						isOpen={this.state.categorySubmenuIsOpen}
+						isOpen={this.props.isCategoryOpen}
 						toggleCategory={() => this.toggleCategory()}
 						handleClick={(url) => this.pushToHistory(url)}
+						toggleCategoryButton={() => this.props.toggleCategory()}
 					/>
 
 					<Item 
@@ -70,9 +53,14 @@ class SideMenu extends Component{
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	setCurrentPage: (url) => dispatch(setCurrentPage(url)),
-	fetchCategories: () => dispatch(fetchCategories())
+const mapStateToProps = (state, props) => ({
+	currentPage: state.ui.currentPage,
+	isCategoryOpen: state.ui.isCategoryDropdownOpen
 })
 
-export default withRouter(connect(null, mapDispatchToProps) (SideMenu))
+const mapDispatchToProps = dispatch => ({
+	setCurrentPage: (url) => dispatch(setCurrentPage(url)),
+	toggleCategory: () => dispatch(toggleCategoryDropdown())
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (SideMenu))

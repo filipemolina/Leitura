@@ -6,7 +6,7 @@ import { categoriesReducer } from './categoriesReducer'
 
 export default combineReducers({
 	posts : postsReducer,
-	commencts : commentsReducer,
+	comments : commentsReducer,
 	categories: categoriesReducer,
 	ui : uiReducer
 })

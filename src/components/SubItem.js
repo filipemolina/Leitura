@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Item from "./Item"
-import { connect } from 'react-redux'
+import { capitalize } from '../utils/helpers'
 
 // Action dispatchers
 import * as Actions from "../actions"
@@ -38,20 +38,21 @@ class SubItem extends Component {
 					text={text}
 					isDropDown={true}
 					isDropDownOpen={isOpen}
-					handleClick={() => this.props.toggleCategoryDropdown()}
+					handleClick={this.props.toggleCategoryButton}
 				/>
 
 				<div className="sub-items" style={style}>
 
 					{/* Iterate through all subItems and create the MenuItems for each one */}
 
-					{subItems.map((item) => (
+					{subItems.allIds.map((item) => (
 						<Item
 							inset={true}
-							text={item}
+							text={capitalize(item)}
 							key={item}
 							url={`/category/${item}`}
 							handleClick={() => this.props.handleClick(`/category/${item}`)}
+							isPrimary={this.props.currentPage === `/category/${item}`}
 						/>
 					))}
 
@@ -62,13 +63,4 @@ class SubItem extends Component {
 	}
 }
 
-const mapStateToProps = (state, props) => ({
-	isOpen: state.ui.isCategoryDropdownOpen
-})
-
-const mapDispatchToProps = dispatch => ({
-	toggleCategoryDropdown: () => dispatch(Actions.toggleCategoryDropdown()),
-	setCurrentPage: (url) => dispatch(Actions.setCurrentPage(url))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps) (SubItem)
+export default SubItem
