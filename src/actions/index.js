@@ -85,3 +85,25 @@ export const fetchPosts = () => dispatch => {
 	API.getPosts()
 		.then(data => dispatch(postsFetched(data)))
 }
+
+////////////////////////////// Comments
+
+const fetchingComments = () => ({
+	type: FETCHING_COMMENTS
+})
+
+const commentsFetched = (comments, postId) => ({
+	type: COMMENTS_FETCHED,
+	comments,
+	postId
+})
+
+export const fetchPostComments = (postId) => dispatch => {
+	dispatch(fetchingComments())
+
+	API.getPostComments(postId)
+		.then(data => {
+			console.log("COMENTARIOS DO POST!", data)
+			dispatch(commentsFetched(data, postId))
+		})
+}

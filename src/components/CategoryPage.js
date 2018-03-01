@@ -2,19 +2,17 @@ import React, { Component } from 'react'
 import PostList from './PostList'
 import AddPostButton from './AddPostButton'
 
-import { objToArray } from '../utils/helpers'
-
 class CategoryPage extends Component {
 	render(){
 
 		// Show only the posts in the current category
 		const { posts, category } = this.props
 
-		const catPosts = objToArray(posts)
+		const catPosts = posts.filter(post => post.category === category)
 
 		return(
 			<div className="home-page">
-				<PostList showComments={false} posts={posts}/>
+				<PostList showComments={false} posts={catPosts}/>
 				<AddPostButton handleOpen={() => this.props.handleOpenModal()}/>
 			</div>
 		)

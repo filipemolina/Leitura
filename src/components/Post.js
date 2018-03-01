@@ -3,6 +3,7 @@ import CategoryChip from './CategoryChip'
 import CommentSection from './CommentSection'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import dateFormat from 'dateformat'
 
 // Material UI imports
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
@@ -33,6 +34,8 @@ class Post extends Component{
 		this.props.setCurrentPage(url)
 	}
 
+	componentDidMount = () => console.log("POST", this.props.post)
+
 	render (){
 
 		const { showComments, post } = this.props
@@ -47,19 +50,13 @@ class Post extends Component{
 			<Card className="post">
 				<CardHeader 
 					title={post.title} 
-					subtitle={`Posted in ${post.timestamp} by ${post.author}`}
+					subtitle={`Posted ${dateFormat(post.timestamp, "mmmm dS yyyy h:MMTT")} by ${post.author}`}
 					avatar="https://picsum.photos/200" 
 				/>
 				<CardText>
 		    	<CategoryChip text={post.category} />
 		    </CardText>
 				<CardText>{post.body}</CardText>
-
-		  	{/* Only show the comment section if explicitly instructed */}
-		    {showComments && (
-		    	<CommentSection isOpen={true} />
-		    )}
-
 		    <CardActions>
 		    	<div>
 			      <FlatButton 
@@ -80,6 +77,11 @@ class Post extends Component{
 			    	)}
 			    </div>
 		    </CardActions>
+
+			  {/* Only show the comment section if explicitly instructed */}
+		    {showComments && (
+		    	<CommentSection isOpen={true} postId={post.id}/>
+		    )}
 			</Card>
 		)
 	}

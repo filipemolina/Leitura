@@ -45,14 +45,14 @@ class SubItem extends Component {
 
 					{/* Iterate through all subItems and create the MenuItems for each one */}
 
-					{subItems.allIds.map((item) => (
+					{subItems.map((item) => (
 						<Item
 							inset={true}
-							text={capitalize(item)}
-							key={item}
-							url={`/category/${item}`}
-							handleClick={() => this.props.handleClick(`/category/${item}`)}
-							isPrimary={this.props.currentPage === `/category/${item}`}
+							text={capitalize(item.name)}
+							key={item.name}
+							url={`/category/${item.name}`}
+							handleClick={() => this.props.handleClick(`/category/${item.name}`)}
+							isPrimary={this.props.currentPage === `/category/${item.name}`}
 						/>
 					))}
 

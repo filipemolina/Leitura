@@ -31,7 +31,7 @@ class CommentForm extends Component {
 				/>
 				<CardText style={{ paddingTop: '0', paddingBottom: '0' }}>
 					<TextField
-					floatingLabelText="Author"
+					floatingLabelText="Name"
 						value={this.state.author}
 						onChange={this.handleChangeAuthor}
 						fullWidth={true}

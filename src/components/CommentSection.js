@@ -8,7 +8,7 @@ import CardText from 'material-ui/Card/CardText'
 class CommentSection extends Component {
 	render(){
 
-		const { isOpen } = this.props
+		const { isOpen, postId } = this.props
 
 		let style
 
@@ -26,7 +26,7 @@ class CommentSection extends Component {
 
 		return(
 			<CardText className="comment-section" style={style}>
-				<CommentList />
+				<CommentList postId={this.props.postId}/>
 				<CommentForm />
 			</CardText>
 		)

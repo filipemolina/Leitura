@@ -9,8 +9,8 @@ class PostList extends Component{
 
 		return (
 			<div className="post-list">
-				{posts.allIds.map((postId) => (
-					<Post showComments={showComments} key={postId} post={posts.byId[postId]}/>
+				{posts.map((post) => (
+					<Post showComments={showComments} key={post.id} post={post}/>
 				))}
 			</div>
 		)

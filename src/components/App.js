@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import HomePage from './HomePage'
 import SideMenu from './SideMenu'
 import AddPostModal from './AddPostModal'
@@ -49,6 +49,12 @@ class App extends Component {
     isModalOpen: false
   })
 
+  // Returns a post object from the store by id
+  getPostById = id => {
+    console.log("ID", id, "POSTS", this.props.posts)
+    return this.props.posts.filter(post => post.id === id)
+  }
+
   componentDidMount = () => {
     this.props.fetchCategories()
     this.props.fetchPosts() 
@@ -89,23 +95,28 @@ class App extends Component {
           {/* Here the React Router takes on and controls what is shown in the main content section*/}
           <div className="main-content" style={style}>
 
-            <Route exact path="/" render={() => (
+            <Route exact path="/" render={(props) => (
               <HomePage 
                 isMenuOpen={this.state.isMenuOpen} 
                 handleOpenModal={() => this.handleOpenModal()}
                 posts={this.props.posts}
+                location={props.location}
               />  
             )}/>
 
-            <Route path="/post/:id" render={({match}) => (
-              <PostDetails match={match}/>
+            <Route path="/post/:id" render={(props) => (
+              <PostDetails 
+                postId={props.match.params.id} 
+                location={props.location}
+              />
             )} />
 
-            <Route path="/category/:category" render={({match}) => (
+            <Route path="/category/:category" render={(props) => (
               <CategoryPage 
-                category={match.params.category}
+                category={props.match.params.category}
                 handleOpenModal={() => this.handleOpenModal()}
                 posts={this.props.posts}
+                location={props.location}
               />
             )} />            
 
@@ -130,4 +141,4 @@ const mapDispatchToProps = dispatch => ({
   fetchPosts: () => dispatch(fetchPosts())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps) (App)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (App))

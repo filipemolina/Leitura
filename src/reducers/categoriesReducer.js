@@ -4,23 +4,13 @@ import {
 	FETCH_CATEGORIES,
 } from '../actions'
 
-const initialCategoriesState = {
-	byId: {},
-	allIds: []
-}
+const initialCategoriesState = []
 
 export const categoriesReducer = (state=initialCategoriesState, action) => {
 	switch(action.type){
 		case CATEGORIES_FETCHED:
-			return action.categories.reduce((accum, val) => {
-				return { 
-					byId: {
-						...accum['byId'],
-						[val.name]: val
-					},
-					allIds: accum['allIds'].concat([val.name])
-				}
-			}, initialCategoriesState)
+			console.log("CATEGORIES", action.categories)
+			return action.categories
 		default:
 			return state
 	}

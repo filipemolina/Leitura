@@ -9,21 +9,12 @@ import {
 	FETCH_POSTS,
 } from '../actions'
 
-const initialPostsState = {
-	byId: {},
-	allIds: []
-}
+const initialPostsState = []
 
 export const postsReducer = (state=initialPostsState, action) => {
 	switch(action.type){
 		case POSTS_FETCHED:
-			return action.posts.reduce((accum, val) => ({
-				byId: {
-					...accum['byId'],
-					[val.id]: val
-				},
-				allIds: accum['allIds'].concat([val.id])
-			}), initialPostsState)
+			return action.posts
 		default:
 			return state
 	}
