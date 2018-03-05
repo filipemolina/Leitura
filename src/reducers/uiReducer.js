@@ -1,12 +1,17 @@
 import {
 	SET_CURRENT_PAGE,
 	TOGGLE_CATEGORY_DROPDOWN,
+	SET_ORDERING
 } from '../actions'
 
 // Initial UI state
 const initialUiState = {
 	currentPage: "/",
 	isCategoryDropdownOpen: false,
+	sortedBy: {
+    field: 'voteScore',
+    order: 'desc'
+  }
 }
 
 export const uiReducer = (state=initialUiState, action) => {
@@ -20,6 +25,14 @@ export const uiReducer = (state=initialUiState, action) => {
 			return {
 				...state,
 				isCategoryDropdownOpen: !state.isCategoryDropdownOpen
+			}
+		case SET_ORDERING:
+			return {
+				...state,
+				sortedBy: {
+					field: action.field,
+					order: action.order,
+				}
 			}
 		default:
 			return state

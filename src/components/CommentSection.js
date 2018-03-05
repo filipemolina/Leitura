@@ -27,7 +27,7 @@ class CommentSection extends Component {
 		return(
 			<CardText className="comment-section" style={style}>
 				<CommentList postId={this.props.postId}/>
-				<CommentForm />
+				<CommentForm postId={this.props.postId}/>
 			</CardText>
 		)
 	}

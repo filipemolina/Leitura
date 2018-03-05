@@ -10,12 +10,15 @@ import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 import ActionThumbUp from 'material-ui/svg-icons/action/thumb-up'
 import CommunicationComment from 'material-ui/svg-icons/communication/comment'
+import NavigationClose from 'material-ui/svg-icons/navigation/close'
 
 // High-order Component from Material UI to get access to the theme variables
 import muiThemeable from 'material-ui/styles/muiThemeable'
 
 // Action dispatchers
 import { setCurrentPage } from "../actions"
+
+import { capitalize } from '../utils/helpers'
 
 class Post extends Component{
 
@@ -34,8 +37,6 @@ class Post extends Component{
 		this.props.setCurrentPage(url)
 	}
 
-	componentDidMount = () => console.log("POST", this.props.post)
-
 	render (){
 
 		const { showComments, post } = this.props
@@ -52,10 +53,13 @@ class Post extends Component{
 					title={post.title} 
 					subtitle={`Posted ${dateFormat(post.timestamp, "mmmm dS yyyy h:MMTT")} by ${post.author}`}
 					avatar="https://picsum.photos/200" 
+					showExpandableButton={true}
+					openIcon={<NavigationClose onClick={() => console.log("CLICOU EM FECHAR")}/>}
+					closeIcon={<NavigationClose onClick={() => console.log("CLICOU EM FECHAR")}/>}
 				/>
-				<CardText>
-		    	<CategoryChip text={post.category} />
-		    </CardText>
+				<div className="category-chip">
+		    	<CategoryChip text={capitalize(post.category)} />
+		    </div>
 				<CardText>{post.body}</CardText>
 		    <CardActions>
 		    	<div>
@@ -69,7 +73,7 @@ class Post extends Component{
 			    	{/* Show this button only if it is on the home page */}
 			    	{showComments || (
 			    		<FlatButton 
-				      	label="Join the Discussion"
+				      	label={`Join the discussion (${post.commentCount} comments)`}
 				      	labelPosition="after"
 				      	icon={<CommunicationComment />}
 				      	onClick={() => this.navigate(`/post/${post.id}`)}

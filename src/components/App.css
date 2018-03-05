@@ -30,4 +30,9 @@
   right: 15px;
   color: #aaa;
   font-weight: bold;
+  display: none;
+}
+
+.category-chip{
+	margin-left: 2vh;
 }

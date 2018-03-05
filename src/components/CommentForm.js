@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 // Material UI imports
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
 import FlatButton from 'material-ui/FlatButton'
 import ContentSend from 'material-ui/svg-icons/content/send'
+
+// Action dispatchers
+import { addComment } from '../actions'
 
 class CommentForm extends Component {
 
@@ -20,6 +24,20 @@ class CommentForm extends Component {
 	handleChangeText = (event) => this.setState({
 		text: event.target.value
 	})
+
+	sendComment = () => {
+		const { postId } = this.props
+		const { text, author } = this.state
+
+		// Test if one of the fields are empty
+		if(text.trim() && author.trim()){
+			this.props.sendComment(postId, text, author)
+			this.setState({
+				author: "",
+				text: "",
+			})
+		}
+	}
 
 	render(){
 
@@ -49,6 +67,7 @@ class CommentForm extends Component {
 							label="Send"
 							icon={<ContentSend />}
 							primary={true}
+							onClick={() => this.sendComment()}
 						/>
 					</div>
 				</CardText>
@@ -57,4 +76,8 @@ class CommentForm extends Component {
 	}
 }
 
-export default CommentForm
+const mapDispatchToProps = dispatch => ({
+	sendComment: (postId, body, author) => dispatch(addComment(postId, body, author))
+})
+
+export default connect(null, mapDispatchToProps) (CommentForm)

@@ -1,17 +1,22 @@
-export const ADD_COMMENT = "ADD_COMMENT"
-export const EDIT_COMMENT = "EDIT_COMMENT"
-export const DELETE_COMMENT = "DELETE_COMMENT"
-export const FETCHING_COMMENTS = "FETCHING_COMMENTS"
-export const COMMENTS_FETCHED = "COMMENTS_FETCHED"
-export const FETCH_COMMENTS = "FETCH_COMMENTS"
+import {
+	ADDING_COMMENT,
+	COMMENT_ADDED,
+	EDIT_COMMENT,
+	DELETE_COMMENT,
+	FETCHING_COMMENTS,
+	COMMENTS_FETCHED,
+	FETCH_COMMENTS,
+} from '../actions'
 
-export const commentsReducer = (state={}, action) => {
+const initialCommentsState = []
+
+export const commentsReducer = (state=initialCommentsState, action) => {
 	switch(action.type){
+		case COMMENT_ADDED:
+			const { comment } = action
+			return state.concat(action.comment)
 		case COMMENTS_FETCHED:
-			return {
-				...state,
-				[action.postId] : action.comments
-			}
+			return action.comments
 		default:
 			return state
 	}

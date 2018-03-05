@@ -8,6 +8,7 @@ import PostDetails from './PostDetails'
 import TopBar from './TopBar'
 import CategoryPage from './CategoryPage'
 import { connect } from 'react-redux'
+import sortBy from 'sort-by'
 
 // Material UI Imports
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -15,13 +16,19 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import { orange500, orange700, grey500, yellow600 } from 'material-ui/styles/colors'
 
 // Actions
-import { fetchCategories, fetchPosts } from "../actions"
+import { 
+  fetchCategories, 
+  fetchPosts,
+  addPost,
+  setOrdering 
+} from "../actions"
+
 
 class App extends Component {
 
   state = {
     isModalOpen: false,
-    isMenuOpen: true
+    isMenuOpen: true,
   }
 
   // Customizing the theme using getMuiTheme
@@ -55,9 +62,17 @@ class App extends Component {
     return this.props.posts.filter(post => post.id === id)
   }
 
+  setOrdering = (field, order) => {
+    this.props.setOrdering(field, order)
+  }
+
+  applyOrdering = (order, array) => {
+    return array.sort(sortBy(`${order.order === 'desc' ? "-" + order.field : order.field}`))
+  }
+
   componentDidMount = () => {
     this.props.fetchCategories()
-    this.props.fetchPosts() 
+    this.props.fetchPosts()
   }
 
   render() {
@@ -74,7 +89,12 @@ class App extends Component {
         padding: '84px 0 0 0'
       }
 
-    return (
+    const { posts } = this.props
+
+    const orderedPosts = this.applyOrdering(this.props.sortedBy, posts)
+
+    return ( 
+
       <MuiThemeProvider muiTheme={this.newTheme}>
         <div className="App">
 
@@ -83,6 +103,8 @@ class App extends Component {
             title="Leitura" 
             onLeftIconButtonClick={() => this.toggleMenu()}
             showFilter={true}
+            setOrdering={(field, order) => this.props.setOrdering(field, order)}
+            order={this.props.sortedBy}
           />
 
           {/* Side Menu containing navigation links */}
@@ -99,7 +121,7 @@ class App extends Component {
               <HomePage 
                 isMenuOpen={this.state.isMenuOpen} 
                 handleOpenModal={() => this.handleOpenModal()}
-                posts={this.props.posts}
+                posts={orderedPosts}
                 location={props.location}
               />  
             )}/>
@@ -115,7 +137,7 @@ class App extends Component {
               <CategoryPage 
                 category={props.match.params.category}
                 handleOpenModal={() => this.handleOpenModal()}
-                posts={this.props.posts}
+                posts={orderedPosts}
                 location={props.location}
               />
             )} />            
@@ -123,7 +145,12 @@ class App extends Component {
           </div>
 
           {/* Modal to Add a new post */}
-          <AddPostModal handleClose={() => this.handleCloseModal()} isModalOpen={this.state.isModalOpen}/>
+          <AddPostModal 
+            handleClose={() => this.handleCloseModal()} 
+            isModalOpen={this.state.isModalOpen}
+            handleAddPost={(post) => this.props.addPost(post)}
+            categories={this.props.categories}
+          />
 
         </div>
       </MuiThemeProvider>
@@ -134,11 +161,14 @@ class App extends Component {
 const mapStateToProps = (state, props) => ({
   posts: state.posts,
   categories: state.categories,
+  sortedBy: state.ui.sortedBy
 })
 
 const mapDispatchToProps = dispatch => ({
   fetchCategories: () => dispatch(fetchCategories()),
-  fetchPosts: () => dispatch(fetchPosts())
+  fetchPosts: () => dispatch(fetchPosts()),
+  setOrdering: (field, order) => dispatch(setOrdering(field, order)),
+  addPost: (post) => dispatch(addPost(post))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps) (App))

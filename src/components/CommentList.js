@@ -16,7 +16,7 @@ class CommentList extends Component {
 		return(
 			<div className="comment-list">
 				{/* Only iterate through if the property exists on the object */}
-				{comments[postId] && comments[postId].map(comment => (
+				{comments.filter(comment => comment.parentId === postId).map(comment => (
 					<Comment key={comment.id} author={comment.author} text={comment.body} timestamp={comment.timestamp}/>
 				))}
 			</div>

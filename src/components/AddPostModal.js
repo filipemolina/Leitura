@@ -7,12 +7,13 @@ import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import SelectField from 'material-ui/SelectField'
 
+import { capitalize } from "../utils/helpers"
+
 class AddPostModal extends Component {
 
 	state = {
 		name: '',
 		title: '',
-		categories: ["Teste", "Mulambo", "Crocodilo", "Aminoácido"],
 		category: "",
 		body: '',
 	}
@@ -53,7 +54,25 @@ class AddPostModal extends Component {
 		this.props.handleClose();
 	}
 
+	sendPost = () => {
+
+		const { name, title, category, body } = this.state
+
+		if(name.trim() && title.trim() && category.trim() && body.trim()){
+			this.props.handleAddPost({
+				title: title,
+				body: body,
+				author: name,
+				category: category,
+			})
+
+			this.closeModal()
+		}
+	}
+
 	render(){
+
+		const { categories } = this.props
 
 		const actions = [
 			<FlatButton
@@ -64,7 +83,7 @@ class AddPostModal extends Component {
 			<FlatButton
 				label="Ok"
 				primary={true}
-				onClick={this.closeModal}
+				onClick={() => this.sendPost()}
 			/>
 		]
 
@@ -92,8 +111,8 @@ class AddPostModal extends Component {
 					onChange={this.handleSelectChange}
 				>
 					
-					{this.state.categories.map((category) => (
-						<MenuItem key={category} value={category} primaryText={category} />
+					{categories.map((category) => (
+						<MenuItem key={category.name} value={category.name} primaryText={capitalize(category.name)} />
 					))}
 
 				</SelectField>
