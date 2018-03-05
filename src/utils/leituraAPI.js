@@ -63,3 +63,22 @@ export const addComment = (postId, body, author) => new Promise((resolve, reject
 	}).then(response => response.data)
 		.then(data => resolve(data))
 })
+
+//Deletes a post and all related comments
+export const deletePost = (postId) => new Promise((resolve, reject) => {
+	axios({
+		method: 'delete',
+		url: `${endPoint}/posts/${postId}`,
+		headers: headers,
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})
+
+export const deleteComment = commentId => new Promise((resolve, reject) => {
+	axios({
+		method: 'delete',
+		url: `${endPoint}/comments/${commentId}`,
+		headers: headers,
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})

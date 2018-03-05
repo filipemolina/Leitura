@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import SelectField from 'material-ui/SelectField'
+import AlertWarning from 'material-ui/svg-icons/alert/warning'
 
 import { capitalize } from "../utils/helpers"
 
@@ -16,6 +17,7 @@ class AddPostModal extends Component {
 		title: '',
 		category: "",
 		body: '',
+		showError: false
 	}
 
 	nameInput = ""
@@ -56,9 +58,15 @@ class AddPostModal extends Component {
 
 	sendPost = () => {
 
-		const { name, title, category, body } = this.state
+		const { name, title, category, body, showError } = this.state
+
+		// Remove the error
+		this.setState({
+			showError: false,
+		})
 
 		if(name.trim() && title.trim() && category.trim() && body.trim()){
+			
 			this.props.handleAddPost({
 				title: title,
 				body: body,
@@ -67,6 +75,11 @@ class AddPostModal extends Component {
 			})
 
 			this.closeModal()
+		} else {
+			// Show the error message
+			this.setState({
+				showError: true,
+			})
 		}
 	}
 
@@ -94,6 +107,12 @@ class AddPostModal extends Component {
 				modal={true}
 				open={this.props.isModalOpen}
 			>
+
+				{this.state.showError && (
+					<div className="alert">
+						<AlertWarning color="#fff" /> <span>Please, fill in all fields of the form.</span>
+					</div>
+				)}
 
 				<TextField 
 					floatingLabelText="Name" 

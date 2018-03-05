@@ -7,7 +7,8 @@ import * as API from "../utils/leituraAPI"
 export const ADDING_POST = "ADDING_POST"
 export const POST_ADDED = "POST_ADDED"
 export const EDIT_POST = "EDIT_POST"
-export const DELETE_POST = "DELETE_POST"
+export const DELETING_POST = "DELETING_POST"
+export const POST_DELETED = "POST_DELETED"
 export const ADD_VOTE = "ADD_VOTE"
 export const REMOVE_VOTE = "REMOVE_VOTE"
 export const FETCHING_POSTS = "FETCHING_POSTS"
@@ -19,7 +20,8 @@ export const FETCH_POSTS = "FETCH_POSTS"
 export const ADDING_COMMENT = "ADDING_COMMENT"
 export const COMMENT_ADDED = "COMMENT_ADDED"
 export const EDIT_COMMENT = "EDIT_COMMENT"
-export const DELETE_COMMENT = "DELETE_COMMENT"
+export const DELETING_COMMENT = "DELETING_COMMENT"
+export const COMMENT_DELETED = "COMMENT_DELETED"
 export const FETCHING_COMMENTS = "FETCHING_COMMENTS"
 export const COMMENTS_FETCHED = "COMMENTS_FETCHED"
 export const FETCH_COMMENTS = "FETCH_COMMENTS"
@@ -79,6 +81,8 @@ export const fetchCategories = () => dispatch => {
 
 ////////////////////////////// Posts
 
+// Fetch
+
 const fetchingPosts = () => ({
 	type: FETCHING_POSTS
 })
@@ -87,6 +91,15 @@ const postsFetched = (posts) => ({
 	type: POSTS_FETCHED,
 	posts
 })
+
+export const fetchPosts = () => dispatch => {
+	dispatch(fetchingPosts())
+
+	API.getPosts()
+		.then(data => dispatch(postsFetched(data)))
+}
+
+// Add
 
 const addingPost = () => ({
 	type: ADDING_POST
@@ -97,13 +110,6 @@ const postAdded = (post) => ({
 	post
 })
 
-export const fetchPosts = () => dispatch => {
-	dispatch(fetchingPosts())
-
-	API.getPosts()
-		.then(data => dispatch(postsFetched(data)))
-}
-
 export const addPost = (post) => dispatch => {
 	dispatch(addingPost())
 
@@ -111,7 +117,30 @@ export const addPost = (post) => dispatch => {
 		.then(data => dispatch(postAdded(data)))
 }
 
+// Delete
+
+const deletingPost = () => ({
+	type: DELETING_POST
+})
+
+const postDeleted = (postId) => ({
+	type: POST_DELETED,
+	postId
+})
+
+export const deletePost = (postId) => dispatch => {
+	dispatch(deletingPost())
+
+	API.deletePost(postId)
+		.then(data => {
+			console.log("POST DELETED", data)
+			dispatch(postDeleted(data.id))
+		})
+}
+
 ////////////////////////////// Comments
+
+// Fetch
 
 const fetchingComments = () => ({
 	type: FETCHING_COMMENTS
@@ -132,6 +161,8 @@ export const fetchPostComments = (postId) => dispatch => {
 		})
 }
 
+// Add
+
 const addingComment = () => ({
 	type: ADDING_COMMENT
 })
@@ -148,4 +179,25 @@ export const addComment = (postId, body, author) => dispatch => {
 	.then(data => {
 		dispatch(commentAdded(data))
 	})
+}
+
+// Delete
+
+const deletingComment = () => ({
+	type: DELETING_COMMENT
+})
+
+const commentDeleted = comment => ({
+	type: COMMENT_DELETED,
+	comment
+})
+
+export const deleteComment = commentId => dispatch => {
+	dispatch(deletingComment())
+
+	API.deleteComment(commentId)
+		.then(data => {
+			console.log("COMMENT_DELETED", data)
+			dispatch(commentDeleted(data))
+		})
 }

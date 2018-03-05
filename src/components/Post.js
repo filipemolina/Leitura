@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CategoryChip from './CategoryChip'
 import CommentSection from './CommentSection'
+import Votes from './Votes'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import dateFormat from 'dateformat'
@@ -39,6 +40,14 @@ class Post extends Component{
 
 	render (){
 
+		/*<FlatButton 
+    	label={voteLabel}
+    	labelPosition="after"
+    	icon={icon}
+    	onClick={() => this.handleVoteClick()}
+    	primary={this.state.userClicked}
+    />*/
+
 		const { showComments, post } = this.props
 
 		const icon = this.state.userClicked 
@@ -54,22 +63,16 @@ class Post extends Component{
 					subtitle={`Posted ${dateFormat(post.timestamp, "mmmm dS yyyy h:MMTT")} by ${post.author}`}
 					avatar="https://picsum.photos/200" 
 					showExpandableButton={true}
-					openIcon={<NavigationClose onClick={() => console.log("CLICOU EM FECHAR")}/>}
-					closeIcon={<NavigationClose onClick={() => console.log("CLICOU EM FECHAR")}/>}
+					openIcon={<NavigationClose onClick={() => this.props.openDialog(post)}/>}
+					closeIcon={<NavigationClose onClick={() => this.props.openDialog(post)}/>}
 				/>
 				<div className="category-chip">
 		    	<CategoryChip text={capitalize(post.category)} />
 		    </div>
 				<CardText>{post.body}</CardText>
 		    <CardActions>
-		    	<div>
-			      <FlatButton 
-			      	label={voteLabel}
-			      	labelPosition="after"
-			      	icon={icon}
-			      	onClick={() => this.handleVoteClick()}
-			      	primary={this.state.userClicked}
-			      />
+		    	<div className="post-actions">
+			      <Votes score={post.voteScore} />
 			    	{/* Show this button only if it is on the home page */}
 			    	{showComments || (
 			    		<FlatButton 

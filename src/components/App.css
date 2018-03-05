@@ -25,14 +25,43 @@
 }
 
 .comment-timestamp {
-	position: absolute;
-  top: 15px;
-  right: 15px;
   color: #aaa;
   font-weight: bold;
-  display: none;
+  padding-left: 20px;
 }
 
 .category-chip{
 	margin-left: 2vh;
+}
+
+.alert {
+	background-color: #ff9800;
+	padding: 5px;
+	border-radius: 6px;
+	color: #fff;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.alert span {
+	margin-left: 10px;
+}
+
+.post-actions,
+.comment-actions{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.votes-component{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.votes-wrapper {
+	width: 30vh;
 }
