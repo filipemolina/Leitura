@@ -74,11 +74,64 @@ export const deletePost = (postId) => new Promise((resolve, reject) => {
 		.then(data => resolve(data))
 })
 
+// Deletes a comment
 export const deleteComment = commentId => new Promise((resolve, reject) => {
 	axios({
 		method: 'delete',
 		url: `${endPoint}/comments/${commentId}`,
 		headers: headers,
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})
+
+// Add a vote to a post
+export const addVote = postId => new Promise((resolve, reject) => {
+	axios({
+		method: 'post',
+		url: `${endPoint}/posts/${postId}`,
+		headers: headers,
+		data: {
+			option: 'upVote'
+		}
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})
+
+// Remove a vote from a post
+export const removeVote = postId => new Promise((resolve, reject) => {
+	axios({
+		method: 'post',
+		url: `${endPoint}/posts/${postId}`,
+		headers: headers,
+		data: {
+			option: 'downVote'
+		}
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})
+
+// Add a vote to a post
+export const addVoteToComment = commentId => new Promise((resolve, reject) => {
+	axios({
+		method: 'post',
+		url: `${endPoint}/comments/${commentId}`,
+		headers: headers,
+		data: {
+			option: 'upVote'
+		}
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})
+
+// Remove a vote from a post
+export const removeVoteFromComment = commentId => new Promise((resolve, reject) => {
+	axios({
+		method: 'post',
+		url: `${endPoint}/comments/${commentId}`,
+		headers: headers,
+		data: {
+			option: 'downVote'
+		}
 	}).then(response => response.data)
 		.then(data => resolve(data))
 })

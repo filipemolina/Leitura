@@ -8,19 +8,19 @@ import ActionThumbDown from 'material-ui/svg-icons/action/thumb-down'
 class Votes extends Component {
 	render(){
 
-		const { score } = this.props
+		const { score, addVote, removeVote } = this.props
 
 		return(
 			<div className="votes-wrapper">
 				<div className="votes-component">
 					<IconButton tooltip="Add a Vote" tooltipPosition="top-center">
-						<ActionThumbUp />
+						<ActionThumbUp onClick={addVote} />
 					</IconButton>
 					<div className="votes-component-count">
 						{`Score: ${score}`}
 					</div>
 					<IconButton tooltip="Subtract a Vote" tooltipPosition="top-center">
-						<ActionThumbDown />
+						<ActionThumbDown onClick={removeVote} />
 					</IconButton>
 				</div>
 			</div>

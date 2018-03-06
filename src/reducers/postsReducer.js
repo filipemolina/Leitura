@@ -2,8 +2,8 @@ import {
 	POST_ADDED,
 	EDIT_POST,
 	POST_DELETED,
-	ADD_VOTE,
-	REMOVE_VOTE,
+	VOTE_ADDED,
+	VOTE_REMOVED,
 	FETCHING_POSTS,
 	POSTS_FETCHED,
 	FETCH_POSTS,
@@ -15,6 +15,20 @@ const initialPostsState = []
 
 export const postsReducer = (state=initialPostsState, action) => {
 	switch(action.type){
+
+		case VOTE_REMOVED:
+			return state.map(post => {
+				if(post.id === action.post.id)
+					post.voteScore--
+				return post
+			})
+
+		case VOTE_ADDED:
+			return state.map(post => {
+				if(post.id === action.post.id)
+					post.voteScore++
+				return post
+			})
 		
 		case COMMENT_ADDED:
 			// If a comment was added, increase the number of comments in the post

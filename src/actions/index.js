@@ -9,8 +9,10 @@ export const POST_ADDED = "POST_ADDED"
 export const EDIT_POST = "EDIT_POST"
 export const DELETING_POST = "DELETING_POST"
 export const POST_DELETED = "POST_DELETED"
-export const ADD_VOTE = "ADD_VOTE"
-export const REMOVE_VOTE = "REMOVE_VOTE"
+export const ADDING_VOTE = "ADDING_VOTE"
+export const VOTE_ADDED = "VOTE_ADDED"
+export const REMOVING_VOTE = "REMOVING_VOTE"
+export const VOTE_REMOVED = "VOTE_REMOVED"
 export const FETCHING_POSTS = "FETCHING_POSTS"
 export const POSTS_FETCHED = "POSTS_FETCHED"
 export const FETCH_POSTS = "FETCH_POSTS"
@@ -25,6 +27,11 @@ export const COMMENT_DELETED = "COMMENT_DELETED"
 export const FETCHING_COMMENTS = "FETCHING_COMMENTS"
 export const COMMENTS_FETCHED = "COMMENTS_FETCHED"
 export const FETCH_COMMENTS = "FETCH_COMMENTS"
+export const ADDING_COMMENT_VOTE = "ADDING_COMMENT_VOTE"
+export const COMMENT_VOTE_ADDED = "COMMENT_VOTE_ADDED"
+export const REMOVING_COMMENT_VOTE = "REMOVING_COMMENT_VOTE"
+export const COMMENT_VOTE_REMOVED = "COMMENT_VOTE_REMOVED"
+
 
 // UI
 export const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
@@ -132,10 +139,41 @@ export const deletePost = (postId) => dispatch => {
 	dispatch(deletingPost())
 
 	API.deletePost(postId)
-		.then(data => {
-			console.log("POST DELETED", data)
-			dispatch(postDeleted(data.id))
-		})
+		.then(data => dispatch(postDeleted(data.id)))
+}
+
+// Votes
+
+const addingVote = () => ({
+	type: ADDING_VOTE
+})
+
+const voteAdded = post => ({
+	type: VOTE_ADDED,
+	post
+})
+
+const removingVote = () => ({
+	type: REMOVING_VOTE
+})
+
+const voteRemoved = post => ({
+	type: VOTE_REMOVED,
+	post
+})
+
+export const addVote = postId => dispatch => {
+	dispatch(addingVote())
+
+	API.addVote(postId)
+		.then(data => dispatch(voteAdded(data)))
+}
+
+export const removeVote = postId => dispatch => {
+	dispatch(removingVote())
+
+	API.removeVote(postId)
+		.then(data => dispatch(voteRemoved(data)))
 }
 
 ////////////////////////////// Comments
@@ -200,4 +238,38 @@ export const deleteComment = commentId => dispatch => {
 			console.log("COMMENT_DELETED", data)
 			dispatch(commentDeleted(data))
 		})
+}
+
+// Votes
+
+const addingCommentVote = () => ({
+	type: ADDING_COMMENT_VOTE
+})
+
+const commentVoteAdded = comment => ({
+	type: COMMENT_VOTE_ADDED,
+	comment
+})
+
+const removingCommentVote = () => ({
+	type: REMOVING_COMMENT_VOTE
+})
+
+const commentVoteRemoved = comment => ({
+	type: COMMENT_VOTE_REMOVED,
+	comment
+})
+
+export const addCommentVote = commentId => dispatch => {
+	dispatch(addingCommentVote())
+
+	API.addVoteToComment(commentId)
+		.then(data => dispatch(commentVoteAdded(data)))
+}
+
+export const removeCommentVote = commentId => dispatch => {
+	dispatch(removingCommentVote())
+
+	API.removeVoteFromComment(commentId)
+		.then(data => dispatch(commentVoteRemoved(data)))
 }

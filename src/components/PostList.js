@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 // Action Dispatchers
-import { deletePost } from '../actions'
+import { deletePost, addVote, removeVote } from '../actions'
 
 class PostList extends Component{
 
@@ -38,7 +38,14 @@ class PostList extends Component{
 		return (
 			<div className="post-list">
 				{posts.map((post) => (
-					<Post showComments={showComments} key={post.id} post={post} openDialog={(post) => this.openAlert(post)}/>
+					<Post 
+						showComments={showComments} 
+						key={post.id} 
+						post={post} 
+						openDialog={(post) => this.openAlert(post)}
+						addVoteHandler={() => this.props.addVote(post.id)}
+						removeVoteHandler={() => this.props.removeVote(post.id)}
+					/>
 				))}
 
 				{ isAlertOpen && (	
@@ -56,7 +63,9 @@ class PostList extends Component{
 }
 
 const mapDispatchToProps = dispatch => ({
-	deletePost: (postId) => dispatch(deletePost(postId))
+	deletePost: postId => dispatch(deletePost(postId)),
+	addVote: postId => dispatch(addVote(postId)),
+	removeVote: postId => dispatch(removeVote(postId))
 })
 
 export default withRouter(connect(null, mapDispatchToProps) (PostList))

@@ -23,7 +23,7 @@ class Comment extends Component {
 				/>
 				<div className="comment-actions">
 					<div className="comment-timestamp">{dateFormat(timestamp, "mmmm dS yyyy h:MMTT")}</div>
-					<Votes score={voteScore} />
+					<Votes score={voteScore} addVote={this.props.addVote} removeVote={this.props.removeVote}/>
 				</div>
 			</Card>
 		)

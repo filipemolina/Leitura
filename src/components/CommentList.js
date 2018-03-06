@@ -3,7 +3,7 @@ import Comment from './Comment'
 import { connect } from 'react-redux'
 
 // Action Dispatchers
-import { fetchPostComments, deleteComment } from '../actions'
+import { fetchPostComments, deleteComment, addCommentVote, removeCommentVote } from '../actions'
 
 class CommentList extends Component {
 
@@ -24,6 +24,8 @@ class CommentList extends Component {
 						timestamp={comment.timestamp}
 						voteScore={comment.voteScore}
 						handleDeleteComment={() => this.props.deleteComment(comment.id)}
+						addVote={() => this.props.addVote(comment.id)}
+						removeVote={() => this.props.removeVote(comment.id)}
 					/>
 				))}
 			</div>
@@ -36,8 +38,10 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	getPostComments: (postId) => dispatch(fetchPostComments(postId)),
-	deleteComment: (commentId) => dispatch(deleteComment(commentId))
+	getPostComments: postId => dispatch(fetchPostComments(postId)),
+	deleteComment: commentId => dispatch(deleteComment(commentId)),
+	addVote: commentId => dispatch(addCommentVote(commentId)),
+	removeVote: commentId => dispatch(removeCommentVote(commentId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps) (CommentList)

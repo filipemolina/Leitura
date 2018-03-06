@@ -48,10 +48,10 @@ class Post extends Component{
     	primary={this.state.userClicked}
     />*/
 
-		const { showComments, post } = this.props
+		const { showComments, post, muiTheme, openDialog, addVoteHandler, removeVoteHandler } = this.props
 
 		const icon = this.state.userClicked 
-									? <ActionThumbUp color={this.props.muiTheme.palette.primary1Color} /> 
+									? <ActionThumbUp color={muiTheme.palette.primary1Color} /> 
 									: <ActionThumbUp />
 
 		const voteLabel = this.state.userClicked ? `Unvote (${post.voteScore})` : `Vote (${post.voteScore})`
@@ -63,8 +63,8 @@ class Post extends Component{
 					subtitle={`Posted ${dateFormat(post.timestamp, "mmmm dS yyyy h:MMTT")} by ${post.author}`}
 					avatar="https://picsum.photos/200" 
 					showExpandableButton={true}
-					openIcon={<NavigationClose onClick={() => this.props.openDialog(post)}/>}
-					closeIcon={<NavigationClose onClick={() => this.props.openDialog(post)}/>}
+					openIcon={<NavigationClose onClick={() => openDialog(post)}/>}
+					closeIcon={<NavigationClose onClick={() => openDialog(post)}/>}
 				/>
 				<div className="category-chip">
 		    	<CategoryChip text={capitalize(post.category)} />
@@ -72,7 +72,7 @@ class Post extends Component{
 				<CardText>{post.body}</CardText>
 		    <CardActions>
 		    	<div className="post-actions">
-			      <Votes score={post.voteScore} />
+			      <Votes score={post.voteScore} addVote={addVoteHandler} removeVote={removeVoteHandler}/>
 			    	{/* Show this button only if it is on the home page */}
 			    	{showComments || (
 			    		<FlatButton 
