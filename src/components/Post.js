@@ -5,6 +5,8 @@ import Votes from './Votes'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import dateFormat from 'dateformat'
+import CardTop from './CardTop'
+import AddPostModal from './AddPostModal'
 
 // Material UI imports
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
@@ -17,20 +19,23 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close'
 import muiThemeable from 'material-ui/styles/muiThemeable'
 
 // Action dispatchers
-import { setCurrentPage } from "../actions"
+import { setCurrentPage, fetchCategories } from "../actions"
 
 import { capitalize } from '../utils/helpers'
 
 class Post extends Component{
 
-	// This is just internal state that defines if the votes button should increase or decrease the value
 	state = {
-		userClicked: false,
+		editModalOpen: false
 	}
 
-	handleVoteClick = () => this.setState((prevState) => ({
-		userClicked: !prevState.userClicked
-	}))
+	closeModal = () => this.setState({
+		editModalOpen: false
+	})
+
+	openModal = () => this.setState({
+		editModalOpen: true
+	})
 
 	// Set the current page on the UI store and the Router
 	navigate = url => {
@@ -38,64 +43,73 @@ class Post extends Component{
 		this.props.setCurrentPage(url)
 	}
 
+	componentDidMount = () => {
+
+		// Fetch all the categories in the API for the case when this component is shown by itself in the Post Details page
+		this.props.fetchCategories()
+	}
+
 	render (){
 
-		/*<FlatButton 
-    	label={voteLabel}
-    	labelPosition="after"
-    	icon={icon}
-    	onClick={() => this.handleVoteClick()}
-    	primary={this.state.userClicked}
-    />*/
-
 		const { showComments, post, muiTheme, openDialog, addVoteHandler, removeVoteHandler } = this.props
-
-		const icon = this.state.userClicked 
-									? <ActionThumbUp color={muiTheme.palette.primary1Color} /> 
-									: <ActionThumbUp />
-
-		const voteLabel = this.state.userClicked ? `Unvote (${post.voteScore})` : `Vote (${post.voteScore})`
+		const { editModalOpen } = this.state
 
 		return (
-			<Card className="post">
-				<CardHeader 
-					title={post.title} 
-					subtitle={`Posted ${dateFormat(post.timestamp, "mmmm dS yyyy h:MMTT")} by ${post.author}`}
-					avatar="https://picsum.photos/200" 
-					showExpandableButton={true}
-					openIcon={<NavigationClose onClick={() => openDialog(post)}/>}
-					closeIcon={<NavigationClose onClick={() => openDialog(post)}/>}
-				/>
-				<div className="category-chip">
-		    	<CategoryChip text={capitalize(post.category)} />
-		    </div>
-				<CardText>{post.body}</CardText>
-		    <CardActions>
-		    	<div className="post-actions">
-			      <Votes score={post.voteScore} addVote={addVoteHandler} removeVote={removeVoteHandler}/>
-			    	{/* Show this button only if it is on the home page */}
-			    	{showComments || (
-			    		<FlatButton 
-				      	label={`Join the discussion (${post.commentCount} comments)`}
-				      	labelPosition="after"
-				      	icon={<CommunicationComment />}
-				      	onClick={() => this.navigate(`/post/${post.id}`)}
-				      />
-			    	)}
+			<div>
+				<Card className="post">
+					<CardTop
+						title={post.title}
+						text={`Posted ${dateFormat(post.timestamp, "mmmm dS yyyy h:MMTT")} by ${post.author}`}
+						handleDelete={() => openDialog(post)}
+						handleEdit={() => this.openModal()}
+					/>
+					<div className="category-chip">
+			    	<CategoryChip text={capitalize(post.category)} />
 			    </div>
-		    </CardActions>
+					<CardText>{post.body}</CardText>
+			    <CardActions>
+			    	<div className="post-actions">
+				      <Votes score={post.voteScore} addVote={addVoteHandler} removeVote={removeVoteHandler}/>
+				    	{/* Show this button only if it is on the home page */}
+				    	{showComments || (
+				    		<FlatButton 
+					      	label={`Join the discussion (${post.commentCount} comments)`}
+					      	labelPosition="after"
+					      	icon={<CommunicationComment />}
+					      	onClick={() => this.navigate(`/post/${post.id}`)}
+					      />
+				    	)}
+				    </div>
+			    </CardActions>
 
-			  {/* Only show the comment section if explicitly instructed */}
-		    {showComments && (
-		    	<CommentSection isOpen={true} postId={post.id}/>
-		    )}
-			</Card>
+				  {/* Only show the comment section if explicitly instructed */}
+			    {showComments && (
+			    	<CommentSection isOpen={true} postId={post.id}/>
+			    )}
+				</Card>
+
+				{/* Modal for Editing the Post information */}
+			  {/* TODO: FAZER O ENVIO PARA A EDIÇÃO FUNCIONAR */}
+				{editModalOpen && (
+					<AddPostModal 
+						handleClose={() => this.closeModal()}
+						isModalOpen={this.state.editModalOpen}
+						categories={this.props.categories}
+						post={post}
+					/>
+				)}
+			</div>
 		)
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	setCurrentPage: (url) => dispatch(setCurrentPage(url))
+const mapStateToProps = (state, props) => ({
+	categories: state.categories
 })
 
-export default withRouter(muiThemeable() (connect(null, mapDispatchToProps) (Post)))
+const mapDispatchToProps = dispatch => ({
+	setCurrentPage: (url) => dispatch(setCurrentPage(url)),
+	fetchCategories: () => dispatch(fetchCategories())
+})
+
+export default withRouter(muiThemeable() (connect(mapStateToProps, mapDispatchToProps) (Post)))

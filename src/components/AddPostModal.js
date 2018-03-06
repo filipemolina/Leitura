@@ -83,9 +83,31 @@ class AddPostModal extends Component {
 		}
 	}
 
+	componentDidMount = () => {
+		
+		const { post } = this.props
+
+		if(post){
+			this.setState({
+				title: post.title,
+				body: post.body,
+				name: post.author,
+				category: post.category
+			})
+			console.log("Foi fornecido um post", post)
+		}
+	}
+
 	render(){
 
-		const { categories } = this.props
+		const { categories, post } = this.props
+		let title = ""
+
+		// If a post object is provided, then th
+		if(post)
+			title = "Edit Post"
+		else
+			title = "Add a new Post"
 
 		const actions = [
 			<FlatButton
@@ -102,7 +124,7 @@ class AddPostModal extends Component {
 
 		return(
 			<Dialog
-				title="Add a new Post"
+				title={title}
 				actions={actions}
 				modal={true}
 				open={this.props.isModalOpen}

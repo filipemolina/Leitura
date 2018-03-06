@@ -151,7 +151,7 @@ class App extends Component {
             handleAddPost={(post) => this.props.addPost(post)}
             categories={this.props.categories}
           />
-
+          
         </div>
       </MuiThemeProvider>
     )

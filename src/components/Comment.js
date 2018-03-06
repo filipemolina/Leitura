@@ -1,25 +1,24 @@
 import React, { Component } from 'react'
 import dateFormat from 'dateformat'
 import Votes from './Votes'
+import CardTop from './CardTop'
 
 // Material UI imports
-import { Card, CardHeader} from 'material-ui/Card'
-import NavigationClose from 'material-ui/svg-icons/navigation/close'
+import { Card } from 'material-ui/Card'
 
 class Comment extends Component {
 	render(){
 
-		const { author, text, timestamp, voteScore } = this.props
+		const { author, text, timestamp, voteScore, handleDeleteComment } = this.props
+
+		// TODO: Extrair o CardHeader para outro componente
 
 		return(
 			<Card className="comment">
-				<CardHeader
+				<CardTop
 					title={author}
-					subtitle={text}
-					avatar="https://picsum.photos/150"
-					showExpandableButton={true}
-					openIcon={<NavigationClose onClick={() => this.props.handleDeleteComment()}/>}
-					closeIcon={<NavigationClose onClick={() => this.props.handleDeleteComment()}/>}
+					text={text}
+					handleDelete={handleDeleteComment}
 				/>
 				<div className="comment-actions">
 					<div className="comment-timestamp">{dateFormat(timestamp, "mmmm dS yyyy h:MMTT")}</div>

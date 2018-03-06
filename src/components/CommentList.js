@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Comment from './Comment'
 import { connect } from 'react-redux'
+import sortBy from 'sort-by'
 
 // Action Dispatchers
 import { fetchPostComments, deleteComment, addCommentVote, removeCommentVote } from '../actions'
@@ -13,10 +14,12 @@ class CommentList extends Component {
 
 		const { comments, postId } = this.props
 
+		const showingComments = comments.sort(sortBy("-voteScore"))
+
 		return(
 			<div className="comment-list">
 				{/* Only iterate through if the property exists on the object */}
-				{comments.filter(comment => comment.parentId === postId).map(comment => (
+				{showingComments.filter(comment => comment.parentId === postId).map(comment => (
 					<Comment 
 						key={comment.id} 
 						author={comment.author} 

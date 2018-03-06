@@ -65,3 +65,23 @@
 .votes-wrapper {
 	width: 30vh;
 }
+
+.card-top{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.card-top-content {
+	width: 85%;
+	flex-wrap: wrap;
+	font-family: Roboto, sans-serif;
+}
+
+.card-top-content .title {
+	font-weight: bold;
+}
+
+.card-top-content .text {
+	color: rgba(0,0,0,0.54);
+}
