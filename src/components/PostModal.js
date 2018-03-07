@@ -10,7 +10,7 @@ import AlertWarning from 'material-ui/svg-icons/alert/warning'
 
 import { capitalize } from "../utils/helpers"
 
-class AddPostModal extends Component {
+class PostModal extends Component {
 
 	state = {
 		name: '',
@@ -53,7 +53,7 @@ class AddPostModal extends Component {
 		})
 
 		// Invoke the function to close the modal
-		this.props.handleClose();
+		this.props.handleCancel();
 	}
 
 	sendPost = () => {
@@ -67,7 +67,7 @@ class AddPostModal extends Component {
 
 		if(name.trim() && title.trim() && category.trim() && body.trim()){
 			
-			this.props.handleAddPost({
+			this.props.handleConfirm({
 				title: title,
 				body: body,
 				author: name,
@@ -103,7 +103,8 @@ class AddPostModal extends Component {
 		const { categories, post } = this.props
 		let title = ""
 
-		// If a post object is provided, then th
+		// If a post object is provided, then this is an "update post modal"
+		// Otherwise it is an "add post modal"
 		if(post)
 			title = "Edit Post"
 		else
@@ -136,27 +137,35 @@ class AddPostModal extends Component {
 					</div>
 				)}
 
-				<TextField 
-					floatingLabelText="Name" 
-					value={this.state.name} 
-					fullWidth={true} 
-					onChange={this.handleChangeName}
-					autoFocus
-				/>
+				{/* Show the name field only if it is an "Add Post" modal */}
+
+				{!post && (
+					<TextField 
+						floatingLabelText="Name" 
+						value={this.state.name} 
+						fullWidth={true} 
+						onChange={this.handleChangeName}
+						autoFocus
+					/>
+				)}
 
 				<TextField floatingLabelText="Title" value={this.state.title} fullWidth={true} onChange={this.handleChangeTitle}/>
-				
-				<SelectField
-					floatingLabelText="Category"
-					value={this.state.category}
-					onChange={this.handleSelectChange}
-				>
-					
-					{categories.map((category) => (
-						<MenuItem key={category.name} value={category.name} primaryText={capitalize(category.name)} />
-					))}
 
-				</SelectField>
+				{/* Show the category select field only if it is an "Add Post" modal */}
+
+				{!post && (
+					<SelectField
+						floatingLabelText="Category"
+						value={this.state.category}
+						onChange={this.handleSelectChange}
+					>
+						
+						{categories.map((category) => (
+							<MenuItem key={category.name} value={category.name} primaryText={capitalize(category.name)} />
+						))}
+
+					</SelectField>
+				)}
 
 				<br />
 
@@ -174,4 +183,4 @@ class AddPostModal extends Component {
 	}
 }
 
-export default AddPostModal
+export default PostModal

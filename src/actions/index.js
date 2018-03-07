@@ -6,7 +6,8 @@ import * as API from "../utils/leituraAPI"
 // Posts
 export const ADDING_POST = "ADDING_POST"
 export const POST_ADDED = "POST_ADDED"
-export const EDIT_POST = "EDIT_POST"
+export const EDITING_POST = "EDITING_POST"
+export const POST_EDITED = "POST_EDITED"
 export const DELETING_POST = "DELETING_POST"
 export const POST_DELETED = "POST_DELETED"
 export const ADDING_VOTE = "ADDING_VOTE"
@@ -21,7 +22,8 @@ export const FETCH_POSTS = "FETCH_POSTS"
 // Comments
 export const ADDING_COMMENT = "ADDING_COMMENT"
 export const COMMENT_ADDED = "COMMENT_ADDED"
-export const EDIT_COMMENT = "EDIT_COMMENT"
+export const EDITING_COMMENT = "EDITING_COMMENT"
+export const COMMENT_EDITED = "COMMENT_EDITED"
 export const DELETING_COMMENT = "DELETING_COMMENT"
 export const COMMENT_DELETED = "COMMENT_DELETED"
 export const FETCHING_COMMENTS = "FETCHING_COMMENTS"
@@ -142,6 +144,24 @@ export const deletePost = (postId) => dispatch => {
 		.then(data => dispatch(postDeleted(data.id)))
 }
 
+// Edit
+
+const editingPost = () => ({
+	type: EDITING_POST
+})
+
+const postEdited = (post) => ({
+	type: POST_EDITED,
+	post
+})
+
+export const editPost = (postId, post) => dispatch => {
+	dispatch(editingPost())
+
+	API.editPost(postId, post.title, post.body)
+		.then(data => dispatch(postEdited(data)))
+}
+
 // Votes
 
 const addingVote = () => ({
@@ -234,10 +254,25 @@ export const deleteComment = commentId => dispatch => {
 	dispatch(deletingComment())
 
 	API.deleteComment(commentId)
-		.then(data => {
-			console.log("COMMENT_DELETED", data)
-			dispatch(commentDeleted(data))
-		})
+		.then(data => dispatch(commentDeleted(data)))
+}
+
+// Edit
+
+const editingComment = () => ({
+	type: EDITING_COMMENT
+})
+
+const commentEdited = comment => ({
+	type: COMMENT_EDITED,
+	comment
+})
+
+export const editComment = (commentId, body) => dispatch => {
+	dispatch(editingComment())
+
+	API.editComment(commentId, body)
+		.then(data => dispatch(commentEdited(data)))
 }
 
 // Votes

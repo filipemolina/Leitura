@@ -3,7 +3,7 @@ import './App.css'
 import { Route, withRouter } from 'react-router-dom'
 import HomePage from './HomePage'
 import SideMenu from './SideMenu'
-import AddPostModal from './AddPostModal'
+import PostModal from './PostModal'
 import PostDetails from './PostDetails'
 import TopBar from './TopBar'
 import CategoryPage from './CategoryPage'
@@ -145,10 +145,10 @@ class App extends Component {
           </div>
 
           {/* Modal to Add a new post */}
-          <AddPostModal 
-            handleClose={() => this.handleCloseModal()} 
+          <PostModal 
+            handleCancel={() => this.handleCloseModal()} 
             isModalOpen={this.state.isModalOpen}
-            handleAddPost={(post) => this.props.addPost(post)}
+            handleConfirm={(post) => this.props.addPost(post)}
             categories={this.props.categories}
           />
           

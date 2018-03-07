@@ -1,7 +1,7 @@
 import {
 	ADDING_COMMENT,
 	COMMENT_ADDED,
-	EDIT_COMMENT,
+	COMMENT_EDITED,
 	COMMENT_DELETED,
 	FETCHING_COMMENTS,
 	COMMENTS_FETCHED,
@@ -14,6 +14,13 @@ const initialCommentsState = []
 
 export const commentsReducer = (state=initialCommentsState, action) => {
 	switch(action.type){
+
+		case COMMENT_EDITED:
+			return state.map(comment => {
+				if(comment.id === action.comment.id)
+					comment.body = action.comment.body
+				return comment
+			})
 
 		case COMMENT_VOTE_ADDED:
 			return state.map(comment => {

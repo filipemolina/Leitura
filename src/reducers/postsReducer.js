@@ -1,6 +1,6 @@
 import {
 	POST_ADDED,
-	EDIT_POST,
+	POST_EDITED,
 	POST_DELETED,
 	VOTE_ADDED,
 	VOTE_REMOVED,
@@ -54,6 +54,15 @@ export const postsReducer = (state=initialPostsState, action) => {
 		
 		case POST_DELETED:
 			return state.filter(post => post.id !== action.postId)
+
+		case POST_EDITED:
+			return state.map(post => {
+				if(post.id === action.post.id){
+					post.title = action.post.title
+					post.body  = action.post.body
+				}
+				return post
+			})
 		
 		default:
 			return state

@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import dateFormat from 'dateformat'
 import CardTop from './CardTop'
-import AddPostModal from './AddPostModal'
+import PostModal from './PostModal'
 
 // Material UI imports
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
@@ -19,7 +19,7 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close'
 import muiThemeable from 'material-ui/styles/muiThemeable'
 
 // Action dispatchers
-import { setCurrentPage, fetchCategories } from "../actions"
+import { setCurrentPage, fetchCategories, editPost } from "../actions"
 
 import { capitalize } from '../utils/helpers'
 
@@ -41,6 +41,10 @@ class Post extends Component{
 	navigate = url => {
 		this.props.history.push(url)
 		this.props.setCurrentPage(url)
+	}
+
+	handleEdit = post => {
+		this.props.edit(this.props.post.id, post)
 	}
 
 	componentDidMount = () => {
@@ -89,13 +93,13 @@ class Post extends Component{
 				</Card>
 
 				{/* Modal for Editing the Post information */}
-			  {/* TODO: FAZER O ENVIO PARA A EDIÇÃO FUNCIONAR */}
 				{editModalOpen && (
-					<AddPostModal 
-						handleClose={() => this.closeModal()}
+					<PostModal 
 						isModalOpen={this.state.editModalOpen}
 						categories={this.props.categories}
 						post={post}
+						handleCancel={() => this.closeModal()}
+						handleConfirm={post => this.handleEdit(post)}
 					/>
 				)}
 			</div>
@@ -109,7 +113,8 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => ({
 	setCurrentPage: (url) => dispatch(setCurrentPage(url)),
-	fetchCategories: () => dispatch(fetchCategories())
+	fetchCategories: () => dispatch(fetchCategories()),
+	edit: (id, post) => dispatch(editPost(id, post)),
 })
 
 export default withRouter(muiThemeable() (connect(mapStateToProps, mapDispatchToProps) (Post)))

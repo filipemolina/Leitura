@@ -135,3 +135,31 @@ export const removeVoteFromComment = commentId => new Promise((resolve, reject) 
 	}).then(response => response.data)
 		.then(data => resolve(data))
 })
+
+// Edit the content of a post
+export const editPost = (postId, title, body) => new Promise((resolve, reject) => {
+	axios({
+		url: `${endPoint}/posts/${postId}`,
+		method: 'put',
+		headers: headers,
+		data: {
+			title,
+			body
+		}
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})
+
+// Edit the content of a comment
+export const editComment = (commentId, body) => new Promise((resolve, reject) => {
+	axios({
+		url:`${endPoint}/comments/${commentId}`,
+		method: 'put',
+		headers: headers,
+		data: {
+			timestamp: Date.now(),
+			body
+		}
+	}).then(response => response.data)
+		.then(data => resolve(data))
+})
