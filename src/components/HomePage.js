@@ -1,16 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PostList from './PostList'
 import AddPostButton from './AddPostButton'
 
-class HomePage extends Component{
-	render(){
-		return (
-			<div className="home-page">
-				<PostList posts={this.props.posts}/>
-				<AddPostButton handleOpen={() => this.props.handleOpenModal()}/>
-			</div>
-		)
-	}
+const HomePage  = props => {
+	return (
+		<div className="home-page">
+			<PostList posts={props.posts}/>
+			<AddPostButton handleOpen={() => props.handleOpenModal()}/>
+		</div>
+	)
 }
 
 export default HomePage

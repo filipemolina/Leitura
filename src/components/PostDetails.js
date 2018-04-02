@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Post from './Post'
 import Alert from './Alert'
+import Page404 from './Page404'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -32,22 +33,21 @@ class PostDetails extends Component {
 
 	render(){
 
-		const { postId } = this.props
+		const { post } = this.props
 		const { isAlertOpen } = this.state
-
-		const posts = this.props.posts.filter(post => post.id === postId)
 
 		return(
 			<div className="post-details">
-				{posts.length && (
+				{typeof post === 'undefined' ? (
+					<Page404 />
+				) : (
 					<Post 
 						showComments={true} 
-						post={posts[0]} 
+						post={post} 
 						openDialog={() => this.openAlert()}
-						addVoteHandler={() => this.props.addVote(posts[0].id)}
-						removeVoteHandler={() => this.props.removeVote(posts[0].id)}
+						addVoteHandler={() => this.props.addVote(post.id)}
+						removeVoteHandler={() => this.props.removeVote(post.id)}
 					/>
-
 				)}
 
 				{isAlertOpen && (
@@ -56,7 +56,7 @@ class PostDetails extends Component {
 						title="Attention!"
 						text="Do you really wish to delete this post?"
 						closeAlert={() => this.closeAlert()}
-						confirm={() => this.deletePost(posts[0].id)}
+						confirm={() => this.deletePost(post.id)}
 					/>
 				)}
 			</div>
@@ -65,6 +65,7 @@ class PostDetails extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
+	post: state.posts.find(post => post.id === props.postId),
 	posts: state.posts
 })
 

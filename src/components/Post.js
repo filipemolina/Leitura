@@ -9,11 +9,9 @@ import CardTop from './CardTop'
 import PostModal from './PostModal'
 
 // Material UI imports
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
+import { Card, CardActions, CardText } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
-import ActionThumbUp from 'material-ui/svg-icons/action/thumb-up'
 import CommunicationComment from 'material-ui/svg-icons/communication/comment'
-import NavigationClose from 'material-ui/svg-icons/navigation/close'
 
 // High-order Component from Material UI to get access to the theme variables
 import muiThemeable from 'material-ui/styles/muiThemeable'
@@ -55,7 +53,7 @@ class Post extends Component{
 
 	render (){
 
-		const { showComments, post, muiTheme, openDialog, addVoteHandler, removeVoteHandler } = this.props
+		const { showComments, post, openDialog, addVoteHandler, removeVoteHandler } = this.props
 		const { editModalOpen } = this.state
 
 		return (
@@ -68,28 +66,32 @@ class Post extends Component{
 						handleEdit={() => this.openModal()}
 					/>
 					<div className="category-chip">
-			    	<CategoryChip text={capitalize(post.category)} />
-			    </div>
-					<CardText>{post.body}</CardText>
-			    <CardActions>
-			    	<div className="post-actions">
-				      <Votes score={post.voteScore} addVote={addVoteHandler} removeVote={removeVoteHandler}/>
-				    	{/* Show this button only if it is on the home page */}
-				    	{showComments || (
-				    		<FlatButton 
-					      	label={`Join the discussion (${post.commentCount} comments)`}
-					      	labelPosition="after"
-					      	icon={<CommunicationComment />}
-					      	onClick={() => this.navigate(`/post/${post.id}`)}
-					      />
-				    	)}
+				    	<CategoryChip text={capitalize(post.category)} />
 				    </div>
-			    </CardActions>
+						<CardText>{post.body}</CardText>
+				    <CardActions>
+				    	<div className="post-actions">
+					      <Votes score={post.voteScore} addVote={addVoteHandler} removeVote={removeVoteHandler}/>
+					    	{/* Show this button only if it is on the home page */}
+					    	{showComments ? (
+					    		<div>
+					    			{post.commentCount} comments
+					    		</div>
+					    	) : (
+					    		<FlatButton 
+						      	label={`Join the discussion (${post.commentCount} comments)`}
+						      	labelPosition="after"
+						      	icon={<CommunicationComment />}
+						      	onClick={() => this.navigate(`/${post.category}/${post.id}`)}
+						      />
+					    	)}
+					    </div>
+				    </CardActions>
 
-				  {/* Only show the comment section if explicitly instructed */}
-			    {showComments && (
-			    	<CommentSection isOpen={true} postId={post.id}/>
-			    )}
+					  {/* Only show the comment section if explicitly instructed */}
+				    {showComments && (
+				    	<CommentSection isOpen={true} postId={post.id}/>
+				    )}
 				</Card>
 
 				{/* Modal for Editing the Post information */}

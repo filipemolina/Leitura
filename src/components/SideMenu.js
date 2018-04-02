@@ -9,7 +9,7 @@ import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 
 // Action Dispatchers
-import { setCurrentPage, fetchCategories, toggleCategoryDropdown } from '../actions'
+import { setCurrentPage, toggleCategoryDropdown } from '../actions'
 
 class SideMenu extends Component{
 

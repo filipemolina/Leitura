@@ -1,27 +1,25 @@
-import React, { Component } from 'react'
+import React from 'react'
 import TopBar from './TopBar'
 import SideMenu from './SideMenu'
 
-class Layout extends Component {
-	render(){
-		return(
-			<div>
-				{/* Top Bar of the application */}
-        <TopBar 
-          title={this.props.title} 
-          onLeftIconButtonClick={this.props.tobBarClick}
-          showFilter={this.props.showFilter}
-        />
+const Layout  = props => {
+	return(
+		<div>
+			{/* Top Bar of the application */}
+      <TopBar 
+        title={props.title} 
+        onLeftIconButtonClick={props.tobBarClick}
+        showFilter={props.showFilter}
+      />
 
-        {/* Side Menu containing navigation links */}
-        <SideMenu 
-          handleOpenModal={this.props.handleOpenModal}
-          isMenuOpen={this.props.isMenuOpen}
-          categories={this.props.categories}
-        />
-			</div>
-		)
-	}
+      {/* Side Menu containing navigation links */}
+      <SideMenu 
+        handleOpenModal={props.handleOpenModal}
+        isMenuOpen={props.isMenuOpen}
+        categories={props.categories}
+      />
+		</div>
+	)
 }
 
 export default Layout

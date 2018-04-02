@@ -126,21 +126,21 @@ class App extends Component {
               />  
             )}/>
 
-            <Route path="/post/:id" render={(props) => (
-              <PostDetails 
-                postId={props.match.params.id} 
-                location={props.location}
-              />
-            )} />
-
-            <Route path="/category/:category" render={(props) => (
+            <Route exact path="/:category" render={(props) => (
               <CategoryPage 
                 category={props.match.params.category}
                 handleOpenModal={() => this.handleOpenModal()}
                 posts={orderedPosts}
                 location={props.location}
               />
-            )} />            
+            )} /> 
+
+            <Route path="/:category/:id" render={(props) => (
+              <PostDetails 
+                postId={props.match.params.id} 
+                location={props.location}
+              />
+            )} />
 
           </div>
 

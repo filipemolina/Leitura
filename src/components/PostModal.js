@@ -58,7 +58,7 @@ class PostModal extends Component {
 
 	sendPost = () => {
 
-		const { name, title, category, body, showError } = this.state
+		const { name, title, category, body } = this.state
 
 		// Remove the error
 		this.setState({

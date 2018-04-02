@@ -1,66 +1,60 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Item from "./Item"
 import { capitalize } from '../utils/helpers'
 
-// Action dispatchers
-import * as Actions from "../actions"
+const SubItem  = props => {
 
-class SubItem extends Component {
+	const { text, subItems, isOpen } = props
 
-	render(){
+	// Set the correct height, padding, etc.. to the container of the subItems based off of wheter 
+	// the isOpen property of state
 
-		const { text, subItems, isOpen } = this.props
+	let style
 
-		// Set the correct height, padding, etc.. to the container of the subItems based off of wheter 
-		// the isOpen property of state
+	if(!isOpen)
+		style = {
+			height: '0',
+			padding: '0',
+			border: '0',
+			overflow: 'hidden'
+		}
+	else
+		style = {
+			height: 'auto'
+		}
 
-		let style
+	return(
+		<div className="sub-menu">
 
-		if(!isOpen)
-			style = {
-				height: '0',
-				padding: '0',
-				border: '0',
-				overflow: 'hidden'
-			}
-		else
-			style = {
-				height: 'auto'
-			}
+			{/* Top Level Item */}
 
-		return(
-			<div className="sub-menu">
+			<Item 
+				icon="categories" 
+				text={text}
+				isDropDown={true}
+				isDropDownOpen={isOpen}
+				handleClick={props.toggleCategoryButton}
+			/>
 
-				{/* Top Level Item */}
+			<div className="sub-items" style={style}>
 
-				<Item 
-					icon="categories" 
-					text={text}
-					isDropDown={true}
-					isDropDownOpen={isOpen}
-					handleClick={this.props.toggleCategoryButton}
-				/>
+				{/* Iterate through all subItems and create the MenuItems for each one */}
 
-				<div className="sub-items" style={style}>
+				{subItems.map((item) => (
+					<Item
+						inset={true}
+						text={capitalize(item.name)}
+						key={item.name}
+						url={`/${item.name}`}
+						handleClick={() => props.handleClick(`/${item.name}`)}
+						isPrimary={props.currentPage === `/${item.name}`}
+					/>
+				))}
 
-					{/* Iterate through all subItems and create the MenuItems for each one */}
-
-					{subItems.map((item) => (
-						<Item
-							inset={true}
-							text={capitalize(item.name)}
-							key={item.name}
-							url={`/category/${item.name}`}
-							handleClick={() => this.props.handleClick(`/category/${item.name}`)}
-							isPrimary={this.props.currentPage === `/category/${item.name}`}
-						/>
-					))}
-
-				</div>
-				
 			</div>
-		)
-	}
+			
+		</div>
+	)
 }
 
 export default SubItem

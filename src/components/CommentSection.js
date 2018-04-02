@@ -1,36 +1,34 @@
-import React, { Component } from 'react'
+import React from 'react'
 import CommentForm from './CommentForm'
 import CommentList from './CommentList'
 
 // Material UI imports
 import CardText from 'material-ui/Card/CardText'
 
-class CommentSection extends Component {
-	render(){
+const CommentSection  = props => {
 
-		const { isOpen, postId } = this.props
+	const { isOpen } = props
 
-		let style
+	let style
 
-		if(!isOpen)
-			style = {
-				height: "0",
-				overflow: 'hidden',
-				padding: "0",
-				border: "0",
-			}
-		else
-			style = {
-				height: 'auto'
-			}
+	if(!isOpen)
+		style = {
+			height: "0",
+			overflow: 'hidden',
+			padding: "0",
+			border: "0",
+		}
+	else
+		style = {
+			height: 'auto'
+		}
 
-		return(
-			<CardText className="comment-section" style={style}>
-				<CommentList postId={this.props.postId}/>
-				<CommentForm postId={this.props.postId}/>
-			</CardText>
-		)
-	}
+	return(
+		<CardText className="comment-section" style={style}>
+			<CommentList postId={props.postId}/>
+			<CommentForm postId={props.postId}/>
+		</CardText>
+	)
 }
 
 export default CommentSection

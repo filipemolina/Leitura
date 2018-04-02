@@ -1,11 +1,8 @@
 import {
-	ADDING_COMMENT,
 	COMMENT_ADDED,
 	COMMENT_EDITED,
 	COMMENT_DELETED,
-	FETCHING_COMMENTS,
 	COMMENTS_FETCHED,
-	FETCH_COMMENTS,
 	COMMENT_VOTE_ADDED,
 	COMMENT_VOTE_REMOVED,
 } from '../actions'
@@ -38,7 +35,7 @@ export const commentsReducer = (state=initialCommentsState, action) => {
 		
 		case COMMENT_ADDED:
 			const { comment } = action
-			return state.concat(action.comment)
+			return state.concat(comment)
 		
 		case COMMENTS_FETCHED:
 			return action.comments

@@ -1,8 +1,4 @@
-import {
-	FETCHING_CATEGORIES,
-	CATEGORIES_FETCHED,
-	FETCH_CATEGORIES,
-} from '../actions'
+import { CATEGORIES_FETCHED } from '../actions'
 
 const initialCategoriesState = []
 

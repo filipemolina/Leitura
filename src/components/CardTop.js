@@ -29,7 +29,7 @@ class CardTop extends Component {
 
 	render(){
 
-		const { title, text, timestamp, voteScore, handleDelete, handleEdit, isEditing } = this.props
+		const { title, text, handleDelete, handleEdit, isEditing } = this.props
 
 		return(
 			<CardText className="card-top">
